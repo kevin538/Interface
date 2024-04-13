@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="agl_DataflowMove">
+  <defaultvalue>Docker_Move_DB_V1</defaultvalue>
+  <displayname default="DataflowMove">
+    <label description="DataflowMove" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.1.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

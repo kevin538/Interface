@@ -1,0 +1,106 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_shareddataflows_bac63"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "Quand_une_actualisation_de_dataflow_se_termine": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "metadata": {
+            "operationMetadataId": "55aeb686-e52a-4851-a4a7-7395c49021a3"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_dataflows",
+              "operationId": "OnRefreshComplete",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+            },
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForOnRefreshComplete": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+              "dataflowIdForOnRefreshComplete": "92280e7f-6883-49bb-8031-0116aaad68b9"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {},
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Envoyer_un_e-mail_(V2)": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "8f55c867-6750-4ea2-ae98-3f9c5e3b0f69"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_office365",
+                    "operationId": "SendEmailV2",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                  },
+                  "parameters": {
+                    "emailMessage/To": "ext.lionel.changa@aglgroup.com",
+                    "emailMessage/Subject": "Comptabilisation Dockers",
+                    "emailMessage/Body": "<p><span style=\"font-family: times new roman; font-size: 16px\">Merci, Votre Facture à bien été integrée. </span><br>\n<br>\n<strong>INTERFACE DOCKERS</strong></p>",
+                    "emailMessage/Importance": "Normal"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerOutputs()?['body/status']",
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cd68ff33-16f2-4917-b748-95601e729bc9"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

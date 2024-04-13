@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="agl_DatafowPointage0">
+  <defaultvalue>Dockers_Pointage_0</defaultvalue>
+  <displayname default="DatafowPointage0">
+    <label description="DatafowPointage0" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.1.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

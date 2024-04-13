@@ -1,0 +1,72 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "agl_shareddataflows_404b2"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "a559c0d1-8ea2-4119-84ab-bb0132f13537"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "Actualiser_un_dataflow": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "8b1ff2cf-7ade-4703-8939-1636a893905e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows",
+              "connectionName": "shared_dataflows",
+              "operationId": "RefreshDataflow"
+            },
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForRefreshDataflow": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+              "dataflowIdForRefreshDataflow": "92280e7f-6883-49bb-8031-0116aaad68b9"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

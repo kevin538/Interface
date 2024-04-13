@@ -1,0 +1,196 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "agl_sharedcommondataserviceforapps_52231"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "agl_shareddataflows_404b2"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "Quand_une_actualisation_de_dataflow_se_termine": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "metadata": {
+            "operationMetadataId": "bf14cdd3-aaa4-476f-8225-040eccd28539"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_dataflows",
+              "operationId": "OnRefreshComplete",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+            },
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForOnRefreshComplete": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+              "dataflowIdForOnRefreshComplete": "92280e7f-6883-49bb-8031-0116aaad68b9"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {},
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Lister_les_lignes": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "189af305-e93d-4f7e-a022-163400a710f4"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cr0d6_facturesentetedockersv1s",
+                    "$orderby": "createdon desc",
+                    "$top": 1
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Appliquer_à_chacun": {
+                "foreach": "@outputs('Lister_les_lignes')?['body/value']",
+                "actions": {
+                  "Obtenir_une_ligne_par_ID": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "b787bf6e-2e22-4e51-9d0c-615c8736ac59"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "GetItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cr0d6_facturesentetedockersv1s",
+                        "recordId": "@items('Appliquer_à_chacun')?['cr0d6_facturesentetedockersv1id']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Mettre_à_jour_une_ligne": {
+                    "runAfter": {
+                      "Obtenir_une_ligne_par_ID": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8c745ce2-58af-4e50-925c-bc9b60542f58"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cr0d6_facturesentetedockersv1s",
+                        "recordId": "@outputs('Obtenir_une_ligne_par_ID')?['body/cr0d6_facturesentetedockersv1id']",
+                        "item/cr0d6_status": "Comptabilisé"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Lister_les_lignes": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "77e817e8-a9e1-4a03-8f0e-7aecef2139e5"
+                },
+                "type": "Foreach"
+              },
+              "Effectuer_une_action_non_liée": {
+                "runAfter": {
+                  "Appliquer_à_chacun": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "ee1ccc69-6721-4fa1-b9d5-1db0ff819e2f"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "PerformUnboundAction",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "actionName": "BulkDelete",
+                    "item/QuerySet": [
+                      {
+                        "EntityName": "cr0d6_dockers_pointage_v1"
+                      }
+                    ],
+                    "item/JobName": "DeleteFactureTamponDockers",
+                    "item/SendEmailNotification": false,
+                    "item/ToRecipients": [],
+                    "item/CCRecipients": [],
+                    "item/RecurrencePattern": "@base64ToString('')",
+                    "item/StartDateTime": "@utcNow()",
+                    "item/RunNow": false
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerOutputs()?['body/status']",
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c3616d24-ecac-4c92-b7dd-72a4c48cc829"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

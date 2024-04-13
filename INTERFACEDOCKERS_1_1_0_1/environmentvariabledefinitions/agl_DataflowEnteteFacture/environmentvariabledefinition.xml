@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="agl_DataflowEnteteFacture">
+  <defaultvalue>InsertionFactureGpackEnteteV1</defaultvalue>
+  <displayname default="DataflowEnteteFacture">
+    <label description="DataflowEnteteFacture" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.1.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

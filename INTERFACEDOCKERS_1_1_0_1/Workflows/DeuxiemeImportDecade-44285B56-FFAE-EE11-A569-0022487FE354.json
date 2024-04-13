@@ -1,0 +1,262 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_shareddataflows_bac63"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "Quand_une_actualisation_de_dataflow_se_termine": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "metadata": {
+            "operationMetadataId": "6a3f2530-0237-4bc9-88fb-cbd571ed0bce"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_dataflows",
+              "operationId": "OnRefreshComplete",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+            },
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForOnRefreshComplete": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+              "dataflowIdForOnRefreshComplete": "c00529e4-d307-4922-b5d6-1c658a3288f5"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {
+            "Supprimer_le_fichier": {
+              "runAfter": {},
+              "metadata": {
+                "%252fShared%2bDocuments%252fDockersFactures%252fPointage.xlsx": "/Shared Documents/DockersFactures/Pointage.xlsx",
+                "operationMetadataId": "c49beb36-dd32-4b9e-9502-8e6daf6f8e28"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "DeleteFile",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+                  "id": "%252fShared%2bDocuments%252fDockersFactures%252fPointage.xlsx"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Envoyer_un_e-mail_(V2)": {
+              "runAfter": {
+                "Supprimer_le_fichier": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "36dcd9cc-bde6-4950-a9d8-f93bb2fc8551"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@variables('email')",
+                  "emailMessage/Subject": "Decade",
+                  "emailMessage/Body": "<p><span style=\"font-size: 14px; font-family: times new roman\">Cette Facture existe déjà</span><br>\n<strong>INTERFACE DOCKERS</strong></p>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Appliquer_à_chacun": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Actualiser_un_dataflow": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "2f6acff3-3f0d-4c66-8519-0ddeb436cc0b"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_dataflows",
+                    "operationId": "RefreshDataflow",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+                  },
+                  "parameters": {
+                    "workspaceType": "Environment",
+                    "groupIdForRefreshDataflow": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+                    "dataflowIdForRefreshDataflow": "bcf01813-5521-48ba-af16-71ec4b1bab13"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Envoyer_un_e-mail_(V2)_2": {
+                "runAfter": {
+                  "Actualiser_un_dataflow": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "7441dfcb-4069-455a-83cc-a8ee402858c5"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_office365",
+                    "operationId": "SendEmailV2",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                  },
+                  "parameters": {
+                    "emailMessage/To": "@variables('email')",
+                    "emailMessage/Subject": "Importation Reussie",
+                    "emailMessage/Body": "<p><span style=\"font-size: 14px\">L'importation de la facture dans le systeme<br>\n<br>\n</span><span style=\"font-size: 14px\"><strong>Interface Dockers</strong></span></p>",
+                    "emailMessage/Importance": "Normal"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerOutputs()?['body/status']",
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "46defda8-ead1-4e6d-a8fe-c34d4a718b7b"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "3ad16319-76ff-458b-95fe-263a54c581aa"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "email",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Obtenir_les_éléments": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1e39dce6-ffc5-40a1-a92e-443c20e2c1d6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "3007dbb2-f021-4c75-99ef-9d1552ebd627",
+              "$orderby": "ID desc",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Appliquer_à_chacun": {
+          "foreach": "@outputs('Obtenir_les_éléments')?['body/value']",
+          "actions": {
+            "Définir_une_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7bb8dc17-9f9b-4e95-924e-02a8f635e744"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "email",
+                "value": "@items('Appliquer_à_chacun')?['Title']"
+              }
+            }
+          },
+          "runAfter": {
+            "Obtenir_les_éléments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a566dc74-fe64-4da1-9c00-d5f7f9b355c2"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

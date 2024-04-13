@@ -1,0 +1,110 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_shareddataflows_bac63"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "Quand_une_actualisation_de_dataflow_se_termine": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "metadata": {
+            "operationMetadataId": "92ca466c-f852-45db-bce1-22cc939dcc1c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForOnRefreshComplete": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+              "dataflowIdForOnRefreshComplete": "23991b03-05d6-45ce-b3cf-11b09be593d0"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows",
+              "operationId": "OnRefreshComplete",
+              "connectionName": "shared_dataflows"
+            }
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {},
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Supprimer_le_fichier": {
+                "metadata": {
+                  "%252fShared%2bDocuments%252fEmailSection%252ftests.json": "/Shared Documents/EmailSection/tests.json",
+                  "operationMetadataId": "833a8d91-ed2d-4967-9fa6-b0d9bc16f3d1"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "parameters": {
+                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                    "id": "%252fShared%2bDocuments%252fEmailSection%252ftests.json"
+                  },
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                    "operationId": "DeleteFile",
+                    "connectionName": "shared_sharepointonline"
+                  }
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerOutputs()?['body/status']",
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e41059d0-af38-4bd4-a213-58dafc4d6872"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

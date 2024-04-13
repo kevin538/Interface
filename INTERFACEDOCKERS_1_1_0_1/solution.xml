@@ -1,0 +1,275 @@
+<ImportExportXml version="9.2.23113.214" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>INTERFACEDOCKERS</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="INTERFACE DOCKERS " languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Upgrade of INTERFACE DOCKERS" languagecode="1033" />
+    </Descriptions>
+    <Version>1.1.0.1</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>AGL</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Africa Global Logistics" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>agl</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>74742</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="agl_configuration" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_chantier_section_escale" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_dockers_pointage_v1" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_docker_move_db_v1" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_facturesentetedockersv1" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_section_as400" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_tableerreur" behavior="0" />
+      <RootComponent type="1" schemaName="cr0d6_xcf_601_tampon" behavior="2" />
+      <RootComponent type="29" id="{22cb67ce-dc9f-ee11-be37-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{26ed561d-c7ae-ee11-a569-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{3ca4d751-ba9d-ee11-be37-0022487fe97b}" behavior="0" />
+      <RootComponent type="29" id="{3ca81138-f6ae-ee11-a569-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{44285b56-ffae-ee11-a569-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{95cee675-f898-ee11-be37-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{b00dc852-ba9d-ee11-be37-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{cdb49013-2a98-ee11-be37-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{e02b06eb-5ba6-ee11-be37-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{e7bb85b6-dd9f-ee11-be37-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{f2c026c8-cfae-ee11-a569-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{f5f088f6-459f-ee11-be37-0022487fe2ef}" behavior="0" />
+      <RootComponent type="300" schemaName="agl_interfacedockers_00e05" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cr0d6_chantier_section_escale_2" displayName="cr0d6_chantier_section_escale" solution="Active" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cr0d6_xcf_601_tampon" displayName="xcf_601_Tampon" solution="Active" />
+        <Dependent type="1" schemaName="cr0d6_xcf_601_tampon" displayName="xcf_601_Tampon" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="NotificationCompatbilisation" id="{26ed561d-c7ae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="Premiere&amp;TroisiemeDecade" id="{3ca81138-f6ae-ee11-a569-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="DeuxiemeImportDecade" id="{44285b56-ffae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="RefreshDockerImportFile" id="{95cee675-f898-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="RefreshDeuxiemeDecade" id="{e02b06eb-5ba6-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="SuppressionFactureEntete" id="{f2c026c8-cfae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="RecuperationParametreEmailAS400" id="{f5f088f6-459f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_ZULAA" solution="Active" id.connectionreferencelogicalname="cm237_CR_ZULAA" />
+        <Dependent type="29" displayName="DockerImportFile" id="{cdb49013-2a98-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="DataflowSectionAS400SuppressionFicherJson" id="{22cb67ce-dc9f-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="Premiere&amp;TroisiemeDecade" id="{3ca81138-f6ae-ee11-a569-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="DeuxiemeImportDecade" id="{44285b56-ffae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="RefreshDockerImportFile" id="{95cee675-f898-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="DockerImportFile" id="{cdb49013-2a98-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="RefreshDeuxiemeDecade" id="{e02b06eb-5ba6-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="DataflowEscaleChantierAS400SuppressionFicherJson" id="{e7bb85b6-dd9f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="SuppressionFactureEntete" id="{f2c026c8-cfae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" solution="Active" id.connectionreferencelogicalname="cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69" />
+        <Dependent type="29" displayName="RecuperationParametreEmailAS400" id="{f5f088f6-459f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="DataflowSectionAS400SuppressionFicherJson" id="{22cb67ce-dc9f-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="NotificationCompatbilisation" id="{26ed561d-c7ae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="Premiere&amp;TroisiemeDecade" id="{3ca81138-f6ae-ee11-a569-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="DeuxiemeImportDecade" id="{44285b56-ffae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="RefreshDockerImportFile" id="{95cee675-f898-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="DockerImportFile" id="{cdb49013-2a98-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="RefreshDeuxiemeDecade" id="{e02b06eb-5ba6-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="DataflowEscaleChantierAS400SuppressionFicherJson" id="{e7bb85b6-dd9f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_shareddataflows_bac63" solution="Active" id.connectionreferencelogicalname="new_shareddataflows_bac63" />
+        <Dependent type="29" displayName="RecuperationParametreEmailAS400" id="{f5f088f6-459f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Categorie_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Categorie_Camrail" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Entit" solution="Active" id.schemaname="cm237_Ev_Con_List_Entit" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_RoleUtilisateurEntite" solution="Active" id.schemaname="cm237_Ev_Con_List_RoleUtilisateurEntite" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="DataflowSectionAS400SuppressionFicherJson" id="{22cb67ce-dc9f-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="Premiere&amp;TroisiemeDecade" id="{3ca81138-f6ae-ee11-a569-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="DeuxiemeImportDecade" id="{44285b56-ffae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="RefreshDockerImportFile" id="{95cee675-f898-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="DockerImportFile" id="{cdb49013-2a98-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="RefreshDeuxiemeDecade" id="{e02b06eb-5ba6-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="DataflowEscaleChantierAS400SuppressionFicherJson" id="{e7bb85b6-dd9f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="SuppressionFactureEntete" id="{f2c026c8-cfae-ee11-a569-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Site_ZulaaDev" solution="Active" id.schemaname="cm237_Ev_Con_Site_ZulaaDev" />
+        <Dependent type="29" displayName="RecuperationParametreEmailAS400" id="{f5f088f6-459f-ee11-be37-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_Zulaa_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_Zulaa_Camrail" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_EV_CON_ZULAA_DEV" solution="Active" id.schemaname="cm237_EV_CON_ZULAA_DEV" />
+        <Dependent type="300" schemaName="agl_interfacedockers_00e05" displayName="INTERFACE DOCKERS" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

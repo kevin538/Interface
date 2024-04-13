@@ -1,0 +1,328 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_shareddataflows_bac63"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "agl_sharedcommondataserviceforapps_52231"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "DossierChantierEscale (agl_DossierChantierEscale)": {
+          "defaultValue": "/Shared Documents/EmailChantierEscale",
+          "type": "String",
+          "metadata": {
+            "schemaName": "agl_DossierChantierEscale"
+          }
+        },
+        "DossierEmailSection (agl_DossierEmailSection)": {
+          "defaultValue": "/Shared Documents/EmailSection",
+          "type": "String",
+          "metadata": {
+            "schemaName": "agl_DossierEmailSection"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "À_l'arrivée_d'un_nouvel_e-mail_(V3)": {
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "f2232a05-6fea-42c5-81fd-bf7f9440582a"
+          },
+          "type": "OpenApiConnectionNotification",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365",
+              "operationId": "OnNewEmailV3",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "folderPath": "Inbox",
+              "to": "CM003-Powerplatformglpi.Bcmdla@aglgroup.com",
+              "cc": "ext.lionel.changa@aglgroup.com",
+              "from": "ext.lionel.changa@aglgroup.com",
+              "includeAttachments": true,
+              "importance": "Any",
+              "fetchOnlyWithAttachment": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Appliquer_à_chacun": {
+          "foreach": "@triggerOutputs()?['body/attachments']",
+          "actions": {
+            "Obtenir_la_pièce_jointe_(V2)": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "2fb7e052-0971-4345-a7dc-c29d778cf794"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "GetAttachment_V2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "messageId": "@triggerOutputs()?['body/id']",
+                  "attachmentId": "@items('Appliquer_à_chacun')?['id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Condition_2": {
+              "actions": {
+                "Créer_le_Fichier_Section_Json": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "0a3c6800-07ab-4fc6-bda7-cdd6b2fbf725"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "CreateFile",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "folderPath": "@parameters('DossierEmailSection (agl_DossierEmailSection)')",
+                      "name": "@outputs('Obtenir_la_pièce_jointe_(V2)')?['body/name']",
+                      "body": "@outputs('Obtenir_la_pièce_jointe_(V2)')?['body/contentBytes']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runtimeConfiguration": {
+                    "contentTransfer": {
+                      "transferMode": "Chunked"
+                    }
+                  }
+                },
+                "Actualiser_un_dataflow_SectionAS400": {
+                  "runAfter": {
+                    "Effectuer_une_action_non_liée": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "c3d2990f-7bd8-4559-a4e1-67e87109a2a3"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_dataflows",
+                      "operationId": "RefreshDataflow",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+                    },
+                    "parameters": {
+                      "workspaceType": "Environment",
+                      "groupIdForRefreshDataflow": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+                      "dataflowIdForRefreshDataflow": "23991b03-05d6-45ce-b3cf-11b09be593d0"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Effectuer_une_action_non_liée": {
+                  "runAfter": {
+                    "Créer_le_Fichier_Section_Json": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "86847fbe-6005-4036-9583-f3f216e6c359"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "PerformUnboundAction",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "actionName": "BulkDelete",
+                      "item/QuerySet": [
+                        {
+                          "EntityName": "cr0d6_section_as400"
+                        }
+                      ],
+                      "item/JobName": "Bulk Deletion - @{utcNow()}",
+                      "item/SendEmailNotification": false,
+                      "item/ToRecipients": [],
+                      "item/CCRecipients": [],
+                      "item/RecurrencePattern": "@base64ToString('')",
+                      "item/StartDateTime": "@utcNow()",
+                      "item/RunNow": false
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Obtenir_la_pièce_jointe_(V2)": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Créer_le_Fichier_EscaleChantier_Json": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "31921101-8a28-438b-a043-7f18efe4928c"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "CreateFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "folderPath": "@parameters('DossierChantierEscale (agl_DossierChantierEscale)')",
+                        "name": "Escale.json",
+                        "body": "@outputs('Obtenir_la_pièce_jointe_(V2)')?['body/contentBytes']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Actualiser_un_dataflow_EscaleChantier": {
+                    "runAfter": {
+                      "Effectuer_une_action_non_liée_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "b6ad736b-f9be-412f-9275-cf110dce78f7"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_dataflows",
+                        "operationId": "RefreshDataflow",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows"
+                      },
+                      "parameters": {
+                        "workspaceType": "Environment",
+                        "groupIdForRefreshDataflow": "45cc0213-1dfd-ebf8-a80e-577bb9a2c94a-31c688f59-europe",
+                        "dataflowIdForRefreshDataflow": "5aa19889-c92d-4e63-869e-f885bc91b8c5"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Effectuer_une_action_non_liée_2": {
+                    "runAfter": {
+                      "Créer_le_Fichier_EscaleChantier_Json": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c3894d27-5d90-4ab1-868a-73530105cb4d"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "PerformUnboundAction",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "actionName": "BulkDelete",
+                        "item/QuerySet": [
+                          {
+                            "EntityName": "cr0d6_chantier_section_escale"
+                          }
+                        ],
+                        "item/JobName": "BulkDeletionSectionDataverse ",
+                        "item/SendEmailNotification": false,
+                        "item/ToRecipients": [],
+                        "item/CCRecipients": [],
+                        "item/RecurrencePattern": "@base64ToString('')",
+                        "item/StartDateTime": "@utcNow()",
+                        "item/RunNow": false
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@outputs('Obtenir_la_pièce_jointe_(V2)')?['body/name']",
+                  "tests.json"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "5f3cf6b1-656e-4384-95c7-df08b3c696a8"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "b6c90fb9-150a-438d-b9ce-b994ac20951d"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

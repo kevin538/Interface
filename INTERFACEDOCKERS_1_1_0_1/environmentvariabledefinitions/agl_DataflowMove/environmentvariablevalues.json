@@ -1,0 +1,9 @@
+{
+  "environmentvariablevalues": {
+    "environmentvariablevalue": {
+      "@environmentvariablevalueid": "8274f968-5fa5-ee11-be37-0022487fe2ef",
+      "iscustomizable": "1",
+      "value": "Docker_Move_DB_V1"
+    }
+  }
+}

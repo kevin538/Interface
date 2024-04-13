@@ -1,0 +1,292 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "agl_sharedcommondataserviceforapps_52231"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cr0d6_SharePoint0bab001f13284af896206fbabe1a2e69"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "20973b92-343c-4fd6-971a-28d5ba1d62db"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "NumeroFactureID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Tapez votre entrée",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "Appliquer_à_chacun": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2381f8b4-77aa-4bc3-a40e-e742d5b89a3c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NumeroFactureCryptedID",
+                "type": "string",
+                "value": "@triggerBody()['text']"
+              }
+            ]
+          }
+        },
+        "Effectuer_une_action_non_liée": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ab15628c-3082-4b85-8b9c-fbd16d41abbb"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "PerformUnboundAction",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "actionName": "BulkDelete",
+              "item/QuerySet": [
+                {
+                  "EntityName": "cr0d6_dockers_pointage_v1"
+                }
+              ],
+              "item/JobName": "DeleteFactureTamponDockers",
+              "item/SendEmailNotification": false,
+              "item/ToRecipients": [],
+              "item/CCRecipients": [],
+              "item/RecurrencePattern": "@base64ToString('')",
+              "item/StartDateTime": "@utcNow()",
+              "item/RunNow": false
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Supprimer_une_ligne": {
+          "runAfter": {
+            "Effectuer_une_action_non_liée": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bb366484-22bd-4db7-baa4-97b76be0502d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "DeleteRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cr0d6_facturesentetedockersv1s",
+              "recordId": "@triggerBody()['text']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Envoyer_un_e-mail_(V2)": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "fcba773c-5540-485c-ae68-e1c5ee57f05e"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@variables('Email')",
+                  "emailMessage/Subject": "Status Suppression Facture",
+                  "emailMessage/Body": "<p><span style=\"font-size: 14px; font-family: times new roman\">Suppression non effectuée</span><br>\n<br>\n<strong>INTERFACE DOCKERS</strong></p>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Supprimer_une_ligne": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Envoyer_un_e-mail_(V2)_2": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "8660d6fa-117b-4d8f-8601-16a4730b6d82"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_office365",
+                    "operationId": "SendEmailV2",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                  },
+                  "parameters": {
+                    "emailMessage/To": "@variables('Email')",
+                    "emailMessage/Subject": "Status Suppression Facture",
+                    "emailMessage/Body": "<p><span style=\"font-family: times new roman; font-size: 14px\">Suppression effectuée</span><br>\n<br>\n<strong>INTERFACE DOCKERS</strong></p>",
+                    "emailMessage/Importance": "Normal"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@body('Effectuer_une_action_non_liée')",
+              "Failed"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "30f904f1-0f32-4894-bd57-ae3e0814f510"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "2ec7a356-7a4d-4a4c-818a-85adbec5439b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Email",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Obtenir_les_éléments": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "65fa2b03-bee3-415a-acf2-aa595ae17047"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "3007dbb2-f021-4c75-99ef-9d1552ebd627",
+              "$orderby": "ID desc",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Appliquer_à_chacun": {
+          "foreach": "@outputs('Obtenir_les_éléments')?['body/value']",
+          "actions": {
+            "Définir_une_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "5a6d67dd-60ce-45af-bb93-b52855813f90"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Email",
+                "value": "@items('Appliquer_à_chacun')?['Title']"
+              }
+            }
+          },
+          "runAfter": {
+            "Obtenir_les_éléments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d3a51a9f-0bb0-4168-a811-e728875323cd"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="agl_EscaleAS400Source">
+  <defaultvalue>/Shared Documents/EmailChantierEscale/Escale.json</defaultvalue>
+  <displayname default="EscaleAS400Source ">
+    <label description="EscaleAS400Source " languagecode="1033" />
+  </displayname>
+  <introducedversion>1.1.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="agl_DossierChantierEscale">
+  <defaultvalue>/Shared Documents/EmailChantierEscale</defaultvalue>
+  <displayname default="DossierChantierEscale">
+    <label description="DossierChantierEscale" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.1.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>
